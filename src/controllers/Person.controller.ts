@@ -16,6 +16,7 @@ export const personController = {
     res.json({ token: signToken({id: person.id}) });
   },
   get: async (req: Request, res: Response, next: NextFunction) => {
+    console.log('here');
     let {id} = req.params;
     if (!id) next(errMsg('Must provide a person id.'));
 

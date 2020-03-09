@@ -21,7 +21,8 @@ app.all('*', (err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  
+  console.log('error handler');
+  console.log(err);
   let isObject;
 
   try {
