@@ -8,12 +8,12 @@ export const personController = {
     let errors = reduceValidationResults(Person.validate(req.body));
     if (errors) next(errObj(errors));
 
-    let old = Person.findOne({where: {email: req.body.email}});
+    let old = await Person.findOne({where: {email: req.body.email}});
     if (old) next(errMsg('Person with given email already exists.'));
 
     let person = await Person.create(req.body);
 
-    return { token: signToken({id: person.id}) };
+    res.json({ token: signToken({id: person.id}) });
   },
   get: async (req: Request, res: Response) => {
 
