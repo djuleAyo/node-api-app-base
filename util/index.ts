@@ -1,7 +1,11 @@
 import * as jwt from 'jsonwebtoken';
 
-export function errorObject(obj: object) {
+export function errObj(obj: object) {
   return new Error(stringify(obj));
+}
+
+export function errMsg(msg: string) {
+  return new Error(msg);
 }
 
 export function stringify(obj: object) {
@@ -20,5 +24,6 @@ export let constants = {
 }
 
 export function reduceValidationResults(validationResults: any) {
-  return validationResults.filter((x: any) => !x[0]).map((x: any) => x[1]);
+  let errors = validationResults.filter((x: any) => !x[0]).map((x: any) => x[1]);
+  return errors.length ? errors : undefined;
 }

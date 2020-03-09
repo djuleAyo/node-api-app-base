@@ -11,11 +11,9 @@ db.initDb()
 const app = express();
 
 app.use(morgan('dev'));
-app.use(bodyParser.raw);
+app.use(bodyParser.json());
 
 app.use('/person', testRouter);
-
-app.all('/', (req, res) => res.end('hello app'));
 
 app.all('*', (err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err) next(err);
