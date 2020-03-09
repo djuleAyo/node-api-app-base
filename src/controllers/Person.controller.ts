@@ -15,8 +15,14 @@ export const personController = {
 
     res.json({ token: signToken({id: person.id}) });
   },
-  get: async (req: Request, res: Response) => {
+  get: async (req: Request, res: Response, next: NextFunction) => {
+    let {id} = req.params;
+    if (!id) next(errMsg('Must provide a person id.'));
 
+    const person = await Person.findByPk(id);
+    if (!person) next(errObj({ status: 404, msg: 'Person not found.'}));
+
+    res.status(200).json(person);
   },
   login: async (req: Request, res: Response) => {
 
