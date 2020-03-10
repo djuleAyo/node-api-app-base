@@ -23,14 +23,11 @@ async function initApp(): Promise<any> {
   });
 
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(err);
+    // console.log(err);
     let isObject;
-    try {
-      isObject = JSON.parse(err.message);
-    } catch (error) {
-      isObject = false;
-    }
-    
+    try { isObject = JSON.parse(err.message); }
+    catch (error) { isObject = false; }
+
     res.status(isObject && isObject.status ? isObject.status : 500).json(isObject || {
       error: err.message
     });

@@ -1,6 +1,6 @@
 import passport from 'passport';
 import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt';
-import { constants } from '../../util';
+import { constants, errObj } from '../../util';
 import { Person } from '../models/Person.model';
 import {Strategy as LocalStrategy} from 'passport-local';
 
@@ -13,25 +13,22 @@ export function registerLocalStrategy() {
     const person = await Person.findOne({
       where: {email}
     });
-    if (!person) return done(new Error('Email not found.'), undefined);
-    if (person.psswd !== psswd) return done(new Error('Invalid password.'), undefined);
+    if (!person) return done(errObj({error: 'No person with given email.', status: 401}), undefined);
+    if (person.psswd !== psswd) 
+      return done(errObj({error: 'Invalid password.', status: 401}), undefined);
 
     done(null, person);
   }));
 }
 
 export function registerJwtStrategy() {
-  console.log('executing jwt strategy registration');
-  
   passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: constants.jwtSecret
   }, async (payload, done) => {
     try {
-      console.log(payload);
       const person = await Person.findByPk(payload.id);
       if (!person) return done(null, false);
-      console.log('found the person');
       done(null, person);
     } 
     catch (err) { done(err, false); }
