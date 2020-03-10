@@ -16,7 +16,8 @@ export class Person extends Model<Person> {
       [obj.email, 'Email field is mandatory.'],
       [obj.email && obj.email.match(constants.emailRegex), 'Invalid email provided.'],
       [obj.psswd, 'Password field is mandatory.'],
-      [obj.psswd && obj.psswd.length > 5, 'Password must be at least 6 characters long.']
+      [obj.psswd && obj.psswd.length > 5, 'Password must be at least 6 characters long.'],
+      [obj.psswd && obj.psswd.match(/\d/), 'Password must include a digit.']
     ]
   }
 }

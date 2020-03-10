@@ -5,6 +5,7 @@ export const db =  new Sequelize({
   dialect: 'sqlite',
   storage: './src/db/storage.db',
   models: [__dirname + '/src/models'],
+  logging: false
 });
 
 db.addModels([
@@ -12,7 +13,7 @@ db.addModels([
 ]);
 
 
-export async function initDb() {
+export async function restoreToSeed() {
 
   await db.sync({force: true});
 

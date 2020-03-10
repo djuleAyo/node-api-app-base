@@ -4,16 +4,15 @@ import { Person } from "../models/Person.model";
 
 export const personController = {
    post: async (req: Request, res: Response, next: NextFunction) => {
-    
     let errors = reduceValidationResults(Person.validate(req.body));
-    if (errors) next(errObj(errors));
+    if (errors) next(errObj({errors, status: 400}));
 
     let old = await Person.findOne({where: {email: req.body.email}});
-    if (old) next(errMsg('Person with given email already exists.'));
+    if (old) next(errObj({error: 'Person with given email already exists.', status: 400}));
 
     let person = await Person.create(req.body);
 
-    res.json({ token: signToken({id: person.id}) });
+    res.json({ token: signToken({id: person.id}), person });
   },
   get: async (req: Request, res: Response, next: NextFunction) => {
     console.log('here');
