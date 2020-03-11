@@ -3,6 +3,7 @@ import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt';
 import { constants, errObj } from '../../util';
 import { Person } from '../models/Person.model';
 import {Strategy as LocalStrategy} from 'passport-local';
+const GooglePlusTokenStrategy =  require('passport-google-plus-token');
 
 
 export function registerLocalStrategy() {
@@ -35,3 +36,14 @@ export function registerJwtStrategy() {
   }));
 }
 
+export function registerGoogleAuth() {
+  passport.use('googleAuth', new GooglePlusTokenStrategy({
+    clientID: '809260561963-aotagms7mgh40ihvbtli0b88ufkgjv21.apps.googleusercontent.com',
+    clientSecret: '0qlVfVcXY7zKSbbIkJ-XBnUE'
+  }, async (accessToken: any, refreshToken: any, profile: any, done: any) => {
+    console.log(accessToken);
+    console.log(refreshToken);
+    console.log(profile);
+    
+  }));
+}
